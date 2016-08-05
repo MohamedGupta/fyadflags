@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import twitter, twitter_config
-import requests, json
-cred = next(acct for acct in twitter_config.accounts if acct['username'] == 'FYADFlags')
+import requests
+#cred = next(acct for acct in twitter_config.accounts if acct['username'] == 'FYADFlags')
+cred = twitter_config.accounts['FYADFlags']
 
 def tweet_flag(api):
-    req = requests.get('http://forums.somethingawful.com/flag.php?forumid=26')
-    flag = json.loads(req.content)
+    flag = requests.get('http://forums.somethingawful.com/flag.php?forumid=26').json()
+    #flag = json.loads(req.content)
     flagpath = "http://fi.somethingawful.com/flags" + flag['path']
     tweet = "#FYADflag " + flagpath + " by " + flag['username'] + " " + flag['created']
     mediatweet = "#FYADflag by " + flag['username'] + " " + flag['created'] + " " + flagpath
