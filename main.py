@@ -6,6 +6,8 @@ cred = twitter_config.accounts['FYADFlags']
 
 def tweet_flag(api):
     flag = requests.get('http://forums.somethingawful.com/flag.php?forumid=26').json()
+    while flag['username'] in twitter_config.blacklist_flags:
+        flag = requests.get('http://forums.somethingawful.com/flag.php?forumid=26').json()
     #flag = json.loads(req.content)
     flagpath = "http://fi.somethingawful.com/flags" + flag['path']
     tweet = "#FYADflag " + flagpath + " by " + flag['username'] + " " + flag['created']
