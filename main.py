@@ -1,14 +1,21 @@
 #!/usr/bin/env python
 import twitter, twitter_config
 import requests
-#cred = next(acct for acct in twitter_config.accounts if acct['username'] == 'FYADFlags')
+from os import path
+
 cred = twitter_config.accounts['FYADFlags']
+blacklist_file = '/users/pi/git/fyadflags/blacklist.dict'
+
+if path.isfile(blacklist_file):
+    blacklist = dict(open(blacklist_file, 'r').read())
+else:
+    blacklist = {'users': [], 'paths': []}
 
 def tweet_flag(api):
     flag = requests.get('http://forums.somethingawful.com/flag.php?forumid=26').json()
-    while flag['username'] in twitter_config.blacklist_flags:
+    while flag['username'] in blacklist['users'] or flag['path'] in blacklist['paths']:
         flag = requests.get('http://forums.somethingawful.com/flag.php?forumid=26').json()
-    #flag = json.loads(req.content)
+
     flagpath = "http://fi.somethingawful.com/flags" + flag['path']
     tweet = "#FYADflag " + flagpath + " by " + flag['username'] + " " + flag['created']
     mediatweet = "#FYADflag by " + flag['username'] + " " + flag['created'] + " " + flagpath
