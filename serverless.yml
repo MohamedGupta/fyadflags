@@ -1,0 +1,41 @@
+service: fyadflags
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - node_modules/**
+    - .idea/**
+    - .requirements/**
+    - env/**
+    - venv/**
+    - README.md
+    - package.json
+    - package-lock.json
+    - requirements.txt
+    - tests/**
+
+custom:
+  bucket: twitter      
+
+provider:
+  name: aws
+  runtime: python3.6
+  region: us-east-2
+  environment:
+    SERVICE_NAME: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action: 
+        - s3:PutObject
+        - s3:GetObject
+        - s3:ListBucket
+      Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+functions:
+  postFlag:
+    handler: main.handler
+    events:
+      - schedule: rate(1 hour)
