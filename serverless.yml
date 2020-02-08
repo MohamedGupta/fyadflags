@@ -1,5 +1,4 @@
 service: fyadflags
-
 frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
@@ -25,17 +24,25 @@ provider:
   name: aws
   runtime: python3.6
   region: us-east-2
+  memorysize: 128
+  deploymentBucket:
+    name: fucktardidiot
+    blockPublicAccess: true
   environment:
     SERVICE_NAME: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action: 
-        - s3:PutObject
-        - s3:GetObject
-        - s3:ListBucket
-      Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+        - s3:*t
+      Resource: "arn:aws:s3:::fucktardidiot/*"
 functions:
   postFlag:
     handler: main.handler
     events:
       - schedule: rate(1 hour)
+  archiveFlag:
+    handler: main.archive_handler
+exclude:
+  node_modules/**
+  venv/**
+  __pycache__
