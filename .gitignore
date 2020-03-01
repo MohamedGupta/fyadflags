@@ -24,7 +24,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-
+dm_media/
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -85,8 +85,12 @@ ENV/
 
 # Spyder project settings
 .spyderproject
+.idea/**
+*.gz
 
 # Rope project settings
 .ropeproject
 .serverless/
 fyadflags/**
+fyadflags.*.json
+fyadflags*.json
