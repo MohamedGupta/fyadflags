@@ -16,6 +16,10 @@ package:
     - package-lock.json
     - requirements.txt
     - tests/**
+    - __pychache__
+    - '*.gz'
+    - fyadflags/**
+    - '*.pyc'
 
 custom:
   bucket: twitter      
@@ -25,9 +29,6 @@ provider:
   runtime: python3.6
   region: us-east-2
   memorysize: 128
-  deploymentBucket:
-    name: fucktardidiot
-    blockPublicAccess: true
   environment:
     SERVICE_NAME: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -40,9 +41,3 @@ functions:
     handler: main.handler
     events:
       - schedule: rate(1 hour)
-  archiveFlag:
-    handler: main.archive_handler
-exclude:
-  node_modules/**
-  venv/**
-  __pycache__
